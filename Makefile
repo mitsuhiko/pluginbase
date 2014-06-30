@@ -1,5 +1,5 @@
 test:
-	@cd tests; PYTHONPATH=.. py.test
+	@cd tests; PYTHONPATH=.. py.test --tb=native
 
 upload-docs:
 	$(MAKE) -C docs dirhtml
