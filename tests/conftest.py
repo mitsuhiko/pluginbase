@@ -22,6 +22,7 @@ def source(base):
 
 @pytest.yield_fixture(scope='function', autouse=True)
 def run_garbage_collection():
+    gc.collect()
     try:
         yield
     finally:
