@@ -1,3 +1,4 @@
+import gc
 import pytest
 
 from pluginbase import PluginBase
@@ -17,3 +18,11 @@ def dummy_internal_name():
 def source(base):
     return base.make_plugin_source(searchpath=['./plugins'],
                                    identifier='demo')
+
+
+@pytest.yield_fixture(scope='function', autouse=True)
+def run_garbage_collection():
+    try:
+        yield
+    finally:
+        gc.collect()
