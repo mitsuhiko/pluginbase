@@ -1,3 +1,4 @@
+import gc
 import sys
 
 from pluginbase import get_plugin_source
@@ -59,6 +60,7 @@ def test_cleanup(base):
         from dummy.plugins import hello
 
     new_source = None
+    gc.collect()
     assert sys.modules.get(mod_name) is None
     assert hello.import_self is None
 
