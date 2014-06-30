@@ -43,10 +43,10 @@ Step 3:
             from yourapplication.plugins import my_plugin
         my_plugin.do_something_cool()
 
-Alternatively you can also import plugins programmatically instead of
-using the import statement::
+    Alternatively you can also import plugins programmatically instead of
+    using the import statement::
 
-    my_plugin = plugin_source.load_plugin('my_plugin')
+        my_plugin = plugin_source.load_plugin('my_plugin')
 
 Installation
 ------------
