@@ -26,9 +26,12 @@ class Application(object):
         self.formatters = {}
 
         # and a source which loads the plugins from the "app_name/plugins"
-        # folder.
+        # folder.  We also pass the application name as identifier.  This
+        # is optional but by doing this out plugins have consistent
+        # internal module names which allows pickle to work.
         self.source = plugin_base.make_plugin_source(
-            searchpath=[get_path('./%s/plugins' % name)])
+            searchpath=[get_path('./%s/plugins' % name)],
+            identifier=self.name)
 
         # Here we list all the plugins the source knows about, load them
         # and the use the "setup" function provided by the plugin to
