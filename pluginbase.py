@@ -265,16 +265,17 @@ class PluginSource(object):
             return __import__(self.base.package + '.' + name,
                               globals(), {}, ['__name__'])
 
-    def cleanup(self, _sys=sys):
+    def cleanup(self):
         """Cleans up all loaded plugins manually.  This is necessary to
         call only if :attr:`persist` is enabled.  Otherwise this happens
         automatically when the source gets garbage collected.
-
-        :param _sys: the sys module to use for cleaning up.  This parameter
-                     seems useless a the default is always the right one
-                     anyways but it supports the shutdown when the
-                     interpreter terminates.
         """
+        self.__cleanup()
+
+    def __cleanup(self, _sys=sys, _shutdown_module=_shutdown_module):
+        # The default parameters are necessary because this can be fired
+        # from the destructor and so late when the interpreter shuts down
+        # that these functions and modules might be gone.
         if self.mod is None:
             return
         modname = self.mod.__name__
