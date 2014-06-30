@@ -1,0 +1,16 @@
+
+  { pluginbase example }
+
+    A simple example that shows how plugin systems can be
+    built with pluginbase.
+
+    How to use:
+
+      1. Make sure pluginbase is installed:
+
+         pip install --editable ..
+
+      2. Run the example:
+
+         python example.py
+
