@@ -48,6 +48,9 @@ Step 3:
 
         my_plugin = plugin_source.load_plugin('my_plugin')
 
+For a more complex example see the one from the git repo:
+`pluginbase-example <https://github.com/mitsuhiko/pluginbase/tree/master/example>`__.
+
 Installation
 ------------
 
