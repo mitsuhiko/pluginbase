@@ -121,6 +121,24 @@ Q: Can I automatically discover all modules that are available?
     Yes you can.  Just use the :meth:`PluginSource.list_plugins` method
     which returns a list of all plugins that a source can import.
 
+Q: Why would I use this over setuptools based plugins?
+
+    PluginBase and setuptools based plugins solve very different problems
+    and are incompatible on an architectural point of view.  PluginBase
+    does not solve plugin distribution through PyPI but allows plugins to
+    be virtualized from each other.  Setuptools on the other hand is based
+    on PyPI based distribution but piggybacks on top of the regular import
+    system.
+
+    There are advantages and disadvantages to both of them.  Setuptools
+    based plugins are very useful to extend libraries from other
+    libraries.  For instance the Jinja2 template engine hooks into the
+    Babel library for internationalization through setuptools.
+
+    On the other hand applications distributed to users can benefit from a
+    PluginBase based system which allows them to take control over how
+    plugins are distributed and full separation from each other.
+
 
 API
 ---
