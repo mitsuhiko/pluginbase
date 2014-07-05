@@ -83,7 +83,7 @@ Q: Do plugins pollute ``sys.modules``?
 
 Q: How does PluginBase deal with different versions of the same plugin?
 
-    Each plugin source works indepdenently of each other.  The way this
+    Each plugin source works independently of each other.  The way this
     works is by internally translating the module name.  By default that
     module name is a random number but it can also be forced to a hash of
     a specific value to make it stable across restarts which allows
