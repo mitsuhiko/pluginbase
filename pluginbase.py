@@ -11,18 +11,44 @@
 """
 import os
 import sys
-import uuid
+
+IS_PY3K = False
+IS_PY24 = False
+IS_PY2 = False
+
+try:
+    if sys.version_info[0] >= 3:
+        IS_PY3K = True
+    elif sys.version_info[0] == 2:
+        IS_PY2 = True
+        if sys.version_info[1] == 4:
+            IS_PY24 = True
+except AttributeError:
+    pass  #Not all versions have sys.version_info
+
+
+if IS_PY24:
+    from imps.uuid_old import uuid4
+else:
+    from uuid import uuid4
+
+if IS_PY3K:
+    import pkgutil
+else:
+    from imps import pkgutil_old as pkgutil
+
 import errno
-import pkgutil
-import hashlib
+try:
+    from hashlib import md5
+except ImportError:
+    from md5 import md5
 import threading
 
 from types import ModuleType
 from weakref import ref as weakref
 
 
-PY2 = sys.version_info[0] == 2
-if PY2:
+if IS_PY2:
     text_type = unicode
     string_types = (unicode, str)
     from cStringIO import StringIO as NativeBytesIO
@@ -81,7 +107,11 @@ def _discover_space(name, globals):
     if '__pluginbase_state__' in globals:
         return globals['__pluginbase_state__'].source
 
-    mod_name = globals.get('__name__')
+    mod_name = None
+    if globals:
+        # in unidecode package they pass [] as globals arg
+        mod_name = globals.get('__name__')
+
     if mod_name is not None and \
        mod_name.startswith(_internalspace.__name__ + '.'):
         end = mod_name.find('.', len(_internalspace.__name__) + 1)
@@ -220,7 +250,7 @@ class PluginSource(object):
         #: indicates if this plugin source persists or not.
         self.persist = persist
         if identifier is None:
-            identifier = str(uuid.uuid4())
+            identifier = str(uuid4())
         #: the identifier for this source.
         self.identifier = identifier
         #: A reference to the plugin base that created this source.
@@ -229,9 +259,10 @@ class PluginSource(object):
         self.searchpath = searchpath
         #: The internal module name of the plugin source as it appears
         #: in the :mod:`pluginsource._internalspace`.
-        self.spaceid = '_sp' + hashlib.md5(
-            _to_bytes(self.base.package) + b'|' +
-            _to_bytes(identifier),
+        div = None
+        self.spaceid = '_sp' + md5(
+            _to_bytes(self.base.package) + _to_bytes('|') +
+            _to_bytes(self.identifier)
         ).hexdigest()
         #: a reference to the module on the internal
         #: :mod:`pluginsource._internalspace`.
@@ -267,9 +298,22 @@ class PluginSource(object):
         """
         if '.' in name:
             raise ImportError('Plugin names cannot contain dots.')
-        with self:
-            return __import__(self.base.package + '.' + name,
+
+        #with self:
+        #    return __import__(self.base.package + '.' + name,
+        #                      globals(), {}, ['__name__'])
+
+        self.__assert_not_cleaned_up()
+        _local.__dict__.setdefault('space_stack', []).append(self)
+        try:
+            res = __import__(self.base.package + '.' + name,
                               globals(), {}, ['__name__'])
+            return res
+        finally:
+            try:
+                _local.space_stack.pop()
+            except (AttributeError, IndexError):
+                pass
 
     def open_resource(self, plugin, filename):
         """This function locates a resource inside the plugin and returns
@@ -388,7 +432,7 @@ class _ImportHook(ModuleType):
         self.enabled = False
 
     def plugin_import(self, name, globals=None, locals=None,
-                      fromlist=None, level=0):
+                      fromlist=None, level=-2):
         import_name = name
         if self.enabled:
             ref_globals = globals
@@ -399,7 +443,17 @@ class _ImportHook(ModuleType):
                 actual_name = space._rewrite_module_path(name)
                 if actual_name is not None:
                     import_name = actual_name
-
+        if level == -2:
+            # fake impossible value; default value depends on version
+            if IS_PY24:
+                # the level parameter was added in version 2.5
+                return self._system_import(import_name, globals, locals, fromlist)
+            elif IS_PY3K:
+                # default value for level parameter in python 3
+                level = 0
+            else:
+                # default value for level parameter in other versions
+                level = -1
         return self._system_import(import_name, globals, locals,
                                    fromlist, level)
 
