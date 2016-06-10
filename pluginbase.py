@@ -293,7 +293,7 @@ class PluginSource(object):
                 return open(os.path.join(os.path.dirname(fn), filename), 'rb')
         buf = pkgutil.get_data(self.mod.__name__ + '.' + plugin, filename)
         if buf is None:
-            raise IOError(errno.ENOEXITS, 'Could not find resource')
+            raise IOError(errno.ENOENT, 'Could not find resource')
         return NativeBytesIO(buf)
 
     def cleanup(self):
