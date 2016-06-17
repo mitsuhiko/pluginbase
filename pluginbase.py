@@ -389,7 +389,10 @@ class _ImportHook(ModuleType):
         self.enabled = False
 
     def plugin_import(self, name, globals=None, locals=None,
-                      fromlist=None, level=0):
+                      fromlist=None, level=None):
+        if level is None:
+            # set the level to the default value specific to this python version
+            level = -1 if PY2 else 0
         import_name = name
         if self.enabled:
             ref_globals = globals
