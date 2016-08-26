@@ -76,7 +76,7 @@ Q: Why is there a plugin base and a plugin source class?
 Q: Do plugins pollute ``sys.modules``?
 
     While a plugin source is alive the plugins do indeed reside in
-    ``sys.modules``.  This decision was make conciously so that as little
+    ``sys.modules``.  This decision was made consciously so that as little
     as possible of the Python library ecosystem breaks.  However when the
     plugin source gets garbage collected all loaded plugins will
     also get garbage collected.
