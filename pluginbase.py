@@ -307,7 +307,7 @@ class PluginSource(object):
         # The default parameters are necessary because this can be fired
         # from the destructor and so late when the interpreter shuts down
         # that these functions and modules might be gone.
-        if self.mod is None:
+        if self.mod is None or self.mod.__name__ is None:
             return
         modname = self.mod.__name__
         self.mod.__pluginbase_state__ = None
