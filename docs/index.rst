@@ -154,6 +154,8 @@ High Level
 
 .. autofunction:: get_plugin_source
 
+.. autofunction:: get_searchpath
+
 Import Hook Control
 ```````````````````
 

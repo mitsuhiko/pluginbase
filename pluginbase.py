@@ -73,6 +73,35 @@ def get_plugin_source(module=None, stacklevel=None):
     return _discover_space(name, glob)
 
 
+def get_searchpath(path, depth=float('inf'), followlinks=False):
+    """This utility function returns a list directories suitable for use as the
+    *searchpath* argument to :class:`PluginSource`. This will recursively add
+    directories up to the specified depth.
+
+    :param str path: The directory on the file system to start the search path
+                     at. It will be included in the result.
+    :param int depth: The number of directories to recurse into while building
+                      the search path. By default the function will iterate into
+                      all child directories.
+    :param bool followlinks: Whether or not to recurse into directories which
+                             are symbolic links.
+    :return: A list of directories, including *path* and child directories.
+    :rtype: list
+    """
+    # os.walk implements a depth-first approach which results in unnecessarily
+    # slow execution when *path* is a large tree and *depth* is a small number
+    paths = [path]
+    for dir_entry in os.listdir(path):
+        path = os.path.join(path, dir_entry)
+        if not os.path.isdir(path):
+            continue
+        if not followlinks and os.path.islink(path):
+            continue
+        if depth:
+            paths.extend(get_searchpath(path, depth - 1, followlinks))
+    return paths
+
+
 def _discover_space(name, globals):
     try:
         return _local.space_stack[-1]
@@ -178,7 +207,7 @@ class PluginBase(object):
         _setup_base_package(package)
 
     def make_plugin_source(self, *args, **kwargs):
-        """Creats a plugin source for this plugin base and returns it.
+        """Creates a plugin source for this plugin base and returns it.
         All parameters are forwarded to :class:`PluginSource`.
         """
         return PluginSource(self, *args, **kwargs)
