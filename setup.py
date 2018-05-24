@@ -10,7 +10,7 @@ PluginBase is a module for Python that enables the development of flexible \
 plugin systems in Python.\
 """
 
-with(os.path.join(base_directory, 'README.md'), 'r') as file_h:
+with open(os.path.join(base_directory, 'README.md'), 'r') as file_h:
     long_description = file_h.read()
 
 setup(
@@ -25,7 +25,6 @@ setup(
     long_description_content_type='text/markdown',
     url='http://github.com/mitsuhiko/pluginbase',
     py_modules=['pluginbase'],
-    description='A support library for building plugins sytems in Python.',
     zip_safe=False,
     classifiers=[
         'License :: OSI Approved :: BSD License',
