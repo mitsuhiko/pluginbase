@@ -1,8 +1,17 @@
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+import os
+import sys
 
+base_directory = os.path.dirname(__file__)
+
+from setuptools import setup
+
+DESCRIPTION = """
+PluginBase is a module for Python that enables the development of flexible \
+plugin systems in Python.\
+"""
+
+with(os.path.join(base_directory, 'README.md'), 'r') as file_h:
+    long_description = file_h.read()
 
 setup(
     name='pluginbase',
@@ -11,6 +20,9 @@ setup(
     maintainer='Spencer McIntyre',
     maintainer_email='zeroSteiner@gmail.com',
     version='0.7-dev',
+    description=DESCRIPTION,
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     url='http://github.com/mitsuhiko/pluginbase',
     py_modules=['pluginbase'],
     description='A support library for building plugins sytems in Python.',
