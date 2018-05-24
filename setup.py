@@ -5,7 +5,7 @@ base_directory = os.path.dirname(__file__)
 
 from setuptools import setup
 
-DESCRIPTION = """
+DESCRIPTION = """\
 PluginBase is a module for Python that enables the development of flexible \
 plugin systems in Python.\
 """
@@ -19,7 +19,7 @@ setup(
     author_email='armin.ronacher@active-4.com',
     maintainer='Spencer McIntyre',
     maintainer_email='zeroSteiner@gmail.com',
-    version='0.7-dev',
+    version='0.7',
     description=DESCRIPTION,
     long_description=long_description,
     long_description_content_type='text/markdown',
