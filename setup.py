@@ -10,7 +10,7 @@ setup(
     author_email='armin.ronacher@active-4.com',
     maintainer='Spencer McIntyre',
     maintainer_email='zeroSteiner@gmail.com',
-    version='0.6',
+    version='0.7-dev',
     url='http://github.com/mitsuhiko/pluginbase',
     py_modules=['pluginbase'],
     description='A support library for building plugins sytems in Python.',
