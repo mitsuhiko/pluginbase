@@ -92,13 +92,13 @@ def get_searchpath(path, depth=float('inf'), followlinks=False):
     # slow execution when *path* is a large tree and *depth* is a small number
     paths = [path]
     for dir_entry in os.listdir(path):
-        path = os.path.join(path, dir_entry)
-        if not os.path.isdir(path):
+        sub_path = os.path.join(path, dir_entry)
+        if not os.path.isdir(sub_path):
             continue
-        if not followlinks and os.path.islink(path):
+        if not followlinks and os.path.islink(sub_path):
             continue
         if depth:
-            paths.extend(get_searchpath(path, depth - 1, followlinks))
+            paths.extend(get_searchpath(sub_path, depth - 1, followlinks))
     return paths
 
 
