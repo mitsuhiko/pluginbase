@@ -197,11 +197,9 @@ class PluginBase(object):
                        will be used by all plugin sources registered.
     """
 
-    def __init__(self, package, searchpath=None):
+    def __init__(self, package, searchpath=[]):
         #: the name of the dummy package.
         self.package = package
-        if searchpath is None:
-            searchpath = []
         #: the default search path shared by all plugins as list.
         self.searchpath = searchpath
         _setup_base_package(package)
