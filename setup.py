@@ -19,7 +19,7 @@ setup(
     author_email='armin.ronacher@active-4.com',
     maintainer='Spencer McIntyre',
     maintainer_email='zeroSteiner@gmail.com',
-    version='1.0.0',
+    version='1.0.1',
     description=DESCRIPTION,
     long_description=long_description,
     long_description_content_type='text/markdown',

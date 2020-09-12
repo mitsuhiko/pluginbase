@@ -32,7 +32,7 @@ else:
     from io import BytesIO as NativeBytesIO
 
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 _local = threading.local()
 
 _internalspace = ModuleType(__name__ + '._internalspace')
