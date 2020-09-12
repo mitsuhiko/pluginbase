@@ -1,0 +1,14 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+
+[dev-packages]
+pytest = "*"
+
+[scripts]
+release = 'sh -c "python setup.py build sdist && twine upload --verbose dist/*"'
+tests = 'sh -c "cd tests; PYTHONPATH=.. py.test --tb=native"'
+
