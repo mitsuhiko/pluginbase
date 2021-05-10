@@ -20,7 +20,7 @@ def source(base):
                                    identifier='demo')
 
 
-@pytest.yield_fixture(scope='function', autouse=True)
+@pytest.fixture(scope='function', autouse=True)
 def run_garbage_collection():
     gc.collect()
     try:
